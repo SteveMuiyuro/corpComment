@@ -1,17 +1,23 @@
 import { useState } from "react"
 import {MAX_CHARACTERS} from "../lib/constants"
 
+type Tprops = {
+  addData:(text:string) => void
+}
 
-export default function FeedbackForm() {
+export default function FeedbackForm({addData}:Tprops) {
   const [inputData, setInputData] = useState("")
 
   const charCount = MAX_CHARACTERS -  inputData.length
   const handleChange = (event:React.ChangeEvent<HTMLTextAreaElement>)=>{
     const newValue = event.target.value;
     if(newValue.length > MAX_CHARACTERS)  return;
-    setInputData(newValue);
-  }
+    setInputData(newValue); }
 
+    const handleInputData = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
+        e.preventDefault()
+      addData(inputData)
+        }
 
   return (
     <form className="form">
@@ -27,8 +33,7 @@ export default function FeedbackForm() {
       </label>
       <div>
         <p className="u-italic">{charCount}</p>
-        <button
-
+        <button onClick={handleInputData}
         >Submit</button>
       </div>
       </form>

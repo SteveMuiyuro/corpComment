@@ -3,13 +3,17 @@ import Logo from "./Logo";
 import PageHeading from "./PageHeading";
 import Pattern from "./Pattern";
 
-export default function Header() {
+type Tprops = {
+  addData:(text:string) => void
+}
+
+export default function Header({addData}:Tprops) {
   return (
     <header>
         <Pattern />
         <Logo />
         <PageHeading />
-        <FeedbackForm />
+        <FeedbackForm addData={addData} />
 
     </header>
   )
