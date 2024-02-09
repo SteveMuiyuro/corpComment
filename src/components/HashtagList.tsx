@@ -1,9 +1,18 @@
-export default function HashtagList() {
+
+import HashtagItem from "./HashtagItem"
+
+type Tprops = {
+  feedbackData:string[],
+  handleSelectCompany:(text:string) => void
+}
+
+export default function HashtagList({feedbackData, handleSelectCompany}:Tprops) {
+
+
   return (
     <ul className="hashtags">
-      <li><button>#ByteGard</button></li>
-      <li><button>#Nike</button></li>
-      <li><button>#McDonald's</button></li>
+      {feedbackData.map(feedback => <HashtagItem feedback={feedback} key={feedback} handleSelectCompany={handleSelectCompany}/>)}
+
     </ul>
   )
 }

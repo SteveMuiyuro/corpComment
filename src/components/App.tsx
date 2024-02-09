@@ -11,6 +11,7 @@ function App() {
   const [feedbackData, setFeedbackData] = useState<feedbackitems[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
+  const [selected, setSelected] = useState("")
 
   useEffect(()=>{
     const fetchFun = async () => {
@@ -58,11 +59,21 @@ function App() {
     });
   }
 
+  const filteredItems = selected ? setFeedbackData(prev => prev.filter(item => item.company === selected)): feedbackData;
+
+  const companyList = feedbackData.map(item => item.company).filter((company,index,array)=> {
+    return array.indexOf(company) === index
+  })
+
+  const handleSelectCompany = (text:string) =>{
+    setSelected(text)
+  }
+
   return (
     <div className="app">
       <Footer/>
-      <Container  feedbackData ={feedbackData} isLoading ={isLoading} error={error} addData={addData}/>
-      <HashtagList />
+      <Container  feedbackData ={filteredItems} isLoading ={isLoading} error={error} addData={addData}/>
+      <HashtagList feedbackData = {companyList} handleSelectCompany={handleSelectCompany}   />
     </div>
   )
 }
