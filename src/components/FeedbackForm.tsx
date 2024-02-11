@@ -17,6 +17,7 @@ export default function FeedbackForm({addData}:Tprops) {
     const handleInputData = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>)=>{
         e.preventDefault()
       addData(inputData)
+      setInputData("")
         }
 
   return (

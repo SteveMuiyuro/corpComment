@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Container from "./Container"
 import Footer from "./Footer"
 import HashtagList from "./HashtagList"
@@ -23,7 +23,6 @@ function App() {
             throw new Error()
           }
           const data = await res.json()
-          console.log(data.feedbacks)
           setFeedbackData(data.feedbacks)
 
         }
@@ -41,10 +40,11 @@ function App() {
   const addData = async (text:string) =>{
 
     const newItem:feedbackitems = {
+      id: new Date().getHours(),
       text:text,
-      company: text.split(" ").find(company => company.includes("#"))?.substring(1),
+      company: text.split(" ").find(company => company.includes("#"))!.substring(1),
       daysAgo: 0,
-      badgeLetter:text.split(" ").find(company => company.includes("#")).substring(1).substring(0, 1).toUpperCase(),
+      badgeLetter:text.split(" ").find(company => company.includes("#"))!.substring(1).substring(0, 1).toUpperCase(),
       upvoteCount:0
     }
     setFeedbackData([...feedbackData, newItem])
@@ -59,20 +59,19 @@ function App() {
     });
   }
 
-  const filteredItems = selected ? setFeedbackData(prev => prev.filter(item => item.company === selected)): feedbackData;
+  const filteredItems =  useMemo(() => selected ? feedbackData.filter(company => company.company === selected): feedbackData, [selected, feedbackData]);
+  const companyList = useMemo(() => feedbackData.map(item => item.company).filter((company,index,array)=>  array.indexOf(company) === index), [feedbackData]);
+  const handleSelectCompany = (text:string) => setSelected(text)
 
-  const companyList = feedbackData.map(item => item.company).filter((company,index,array)=> {
-    return array.indexOf(company) === index
-  })
-
-  const handleSelectCompany = (text:string) =>{
-    setSelected(text)
-  }
 
   return (
     <div className="app">
       <Footer/>
-      <Container  feedbackData ={filteredItems} isLoading ={isLoading} error={error} addData={addData}/>
+      <Container
+      feedbackData ={filteredItems}
+      isLoading ={isLoading}
+      error={error}
+      addData={addData}/>
       <HashtagList feedbackData = {companyList} handleSelectCompany={handleSelectCompany}   />
     </div>
   )
