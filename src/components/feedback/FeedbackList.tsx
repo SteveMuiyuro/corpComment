@@ -1,14 +1,13 @@
 import FeedbackItemComponent from "./FeedbackItemComponent";
 import Spinner from "../Spinner";
 import Error from "../Error";
-
-import useFeedBackContext from "../../lib/hooks/useFeedBackContext";
-
+import { feedbackitemstore } from "../../stores/feedbackItemstore";
 
 export default function FeedbackList() {
+  const filteredItems = feedbackitemstore((state) => state.getfilteredItem());
+  const error = feedbackitemstore((state) => state.error);
+  const isLoading = feedbackitemstore((state) => state.isLoading);
 
-  const {filteredItems, isLoading, error} = useFeedBackContext();
-  
   const feedbackitems = filteredItems.map((feedback) => (
     <FeedbackItemComponent key={feedback.id} feedback={feedback} />
   ));

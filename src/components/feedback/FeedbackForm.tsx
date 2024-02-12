@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { MAX_CHARACTERS } from "../../lib/constants";
-import useFeedBackContext from "../../lib/hooks/useFeedBackContext";
+import { feedbackitemstore } from "../../stores/feedbackItemstore";
 
 
 export default function FeedbackForm() {
 
-  const {addData} = useFeedBackContext()
-  
+  const  addData = feedbackitemstore(state => state.addData)
+
   const [inputData, setInputData] = useState("");
   const [validData, setValidData] = useState(false);
   const [invalidData, setInvalidData] = useState(false)

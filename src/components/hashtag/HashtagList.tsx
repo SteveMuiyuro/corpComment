@@ -1,12 +1,13 @@
 
-import useFeedBackContext from "../../lib/hooks/useFeedBackContext"
+import { feedbackitemstore } from "../../stores/feedbackItemstore"
 import HashtagItem from "./HashtagItem"
 
 
 
 export default function HashtagList() {
 
-  const {companyList, handleSelectCompany} = useFeedBackContext()
+const companyList = feedbackitemstore(state => state.getCompanyList())
+const handleSelectCompany = feedbackitemstore(state => state.selectCompany)
 
   return (
     <ul className="hashtags">
